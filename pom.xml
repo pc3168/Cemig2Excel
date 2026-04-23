@@ -20,12 +20,10 @@
             <artifactId>pdfbox</artifactId>
             <version>3.0.1</version> <!-- Verifique a versão mais atual -->
         </dependency>
-        <!-- Source: https://mvnrepository.com/artifact/technology.tabula/tabula -->
         <dependency>
-            <groupId>technology.tabula</groupId>
-            <artifactId>tabula</artifactId>
-            <version>1.0.5</version>
-            <scope>compile</scope>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.10.0</version>
         </dependency>
     </dependencies>
 

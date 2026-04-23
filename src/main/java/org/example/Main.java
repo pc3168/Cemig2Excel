@@ -1,38 +1,42 @@
 package org.example;
 
-
-
-
-import org.apache.pdfbox.Loader;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.text.PDFTextStripper;
-import technology.tabula.*;
-import technology.tabula.extractors.ExtractionAlgorithm;
-import technology.tabula.extractors.SpreadsheetExtractionAlgorithm;
+import org.example.util.FaturaProcessor;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //File file = new File("cemig/22042026210255.pdf");
-        File file = new File("cemig/22042026210315.pdf");
+        File file = new File("cemig/22042026210255.pdf");
+        //File file = new File("cemig/22042026210315.pdf");
         //File file = new File("cemig/22042026210325.pdf");
 
-        // try-with-resources garante que o documento seja fechado
-        try (PDDocument document = Loader.loadPDF(file)) {
-            PDFTextStripper stripper = new PDFTextStripper();
-            String text = stripper.getText(document);
+        FaturaProcessor faturaProcessor = new FaturaProcessor();
+        faturaProcessor.processarDiretorio("cemig");
 
-            System.out.println(text);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
+//        LerPdfToList lerPdfToList = new LerPdfToList(file);
+//        lerPdfToList.lerPdf();
+//
+//        System.out.println("==================================");
+//        System.out.println(lerPdfToList.valoresFaturados());
+//        System.out.println("==================================");
+//        System.out.println(lerPdfToList.informacoesGerais());
+//        System.out.println("==================================");
+//        System.out.println(lerPdfToList.informacoesTecnicas());
+//        System.out.println("==================================");
+//        System.out.println(lerPdfToList.historicoConsumo());
+//        System.out.println("==================================");
+//        System.out.println(lerPdfToList.cabecalho());
+//        System.out.println("==================================");
+//        System.out.println(lerPdfToList.reservadoFisco());
+//        System.out.println("==================================");
+//        System.out.println(lerPdfToList.dadosPessoais());
+//        System.out.println("==================================");
+//        System.out.println(lerPdfToList.referenteVencimento());
+//        System.out.println("==================================");
+//        System.out.println(lerPdfToList.unidadeConsumidora());
+//        System.out.println("==================================");
     }
 
 }
