@@ -2,7 +2,6 @@ package org.example.util;
 
 import org.example.model.Fatura;
 import org.example.model.FaturaBruta;
-import org.example.model.FaturaParser;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -34,11 +33,16 @@ public class FaturaProcessor {
                     leitor.informacoesTecnicas()
             );
 
+
             FaturaParser faturaParser = new FaturaParser(dados);
             Fatura faturaLimpa = faturaParser.getFatura();
             faturasProcessadas.add(faturaLimpa);
+            System.out.println("=================================");
+            System.out.println(faturaLimpa);
+            System.out.println("=================================");
+
         }
-        ExcelExporter.gerarCSV(faturasProcessadas, "saida/" + gerarNomeArquivo());
+        //ExcelExporter.gerarCSV(faturasProcessadas, "saida/" + gerarNomeArquivo());
     }
 
     private String gerarNomeArquivo(){

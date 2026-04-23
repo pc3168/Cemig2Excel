@@ -1,4 +1,7 @@
-package org.example.model;
+package org.example.util;
+
+import org.example.model.Fatura;
+import org.example.model.FaturaBruta;
 
 public class FaturaParser {
 
@@ -8,41 +11,43 @@ public class FaturaParser {
     public FaturaParser(FaturaBruta faturaBruta) {
         this.faturaBruta = faturaBruta;
         this.fatura = new Fatura();
+        System.out.println(faturaBruta.cabecalho());
     }
 
-    public Fatura converterCabecalho() {
+    private Fatura converterCabecalho() {
+
         return new Fatura();
     }
 
-    public Fatura converterValoresFaturados() {
+    private Fatura converterValoresFaturados() {
         return new Fatura();
     }
 
-    public Fatura converterHistoricoConsumo() {
+    private Fatura converterHistoricoConsumo() {
         return new Fatura();
     }
 
-    public Fatura converterReservadoFisco() {
+    private Fatura converterReservadoFisco() {
         return new Fatura();
     }
 
-    public Fatura converterDadosPessoais() {
+    private Fatura converterDadosPessoais() {
         return new Fatura();
     }
 
-    public Fatura converterUnidadeConsumidora() {
+    private Fatura converterUnidadeConsumidora() {
         return new Fatura();
     }
 
-    public Fatura converterReferenteVencimento() {
+    private Fatura converterReferenteVencimento() {
         return new Fatura();
     }
 
-    public Fatura converterInformacoesGerais() {
+    private Fatura converterInformacoesGerais() {
         return new Fatura();
     }
 
-    public Fatura converterInformacoesTecnicas() {
+    private Fatura converterInformacoesTecnicas() {
         return new Fatura();
     }
 

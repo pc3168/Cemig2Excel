@@ -209,4 +209,33 @@ public class Fatura {
     public void setCofinsValor(String cofinsValor) {
         this.cofinsValor = cofinsValor;
     }
+
+    @Override
+    public String toString() {
+        return "Fatura{" +
+                "numeroNF='" + numeroNF + '\'' +
+                ", serie='" + serie + '\'' +
+                ", dataEmissao='" + dataEmissao + '\'' +
+                ", chaveAcesso='" + chaveAcesso + '\'' +
+                ", protocoloAutorizacao='" + protocoloAutorizacao + '\'' +
+                ", unidadeConsumidora='" + unidadeConsumidora + '\'' +
+                ", codDebitoAutomatico='" + codDebitoAutomatico + '\'' +
+                ", vencimento='" + vencimento + '\'' +
+                ", totalPagar='" + totalPagar + '\'' +
+                ", tipoMedicao='" + tipoMedicao + '\'' +
+                ", medicao='" + medicao + '\'' +
+                ", leituraAnterior='" + leituraAnterior + '\'' +
+                ", leituraAtual='" + leituraAtual + '\'' +
+                ", consumoKWh='" + consumoKWh + '\'' +
+                ", icmsBase='" + icmsBase + '\'' +
+                ", icmsAliquota='" + icmsAliquota + '\'' +
+                ", icmsValor='" + icmsValor + '\'' +
+                ", pasepBase='" + pasepBase + '\'' +
+                ", pasepAliquota='" + pasepAliquota + '\'' +
+                ", pasepValor='" + pasepValor + '\'' +
+                ", cofinsBase='" + cofinsBase + '\'' +
+                ", cofinsAliquota='" + cofinsAliquota + '\'' +
+                ", cofinsValor='" + cofinsValor + '\'' +
+                '}';
+    }
 }
