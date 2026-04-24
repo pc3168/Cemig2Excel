@@ -42,7 +42,7 @@ public class FaturaProcessor {
             System.out.println("=================================");
 
         }
-        //ExcelExporter.gerarCSV(faturasProcessadas, "saida/" + gerarNomeArquivo());
+        ExcelExporter.gerarCSVToString(faturasProcessadas, "saida/" + gerarNomeArquivo());
     }
 
     private String gerarNomeArquivo(){

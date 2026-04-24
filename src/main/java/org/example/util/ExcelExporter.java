@@ -33,4 +33,25 @@ public class ExcelExporter {
             System.err.println("Erro ao gerar CSV: " + e.getMessage());
         }
     }
+
+    public static void gerarCSVToString(List<Fatura> faturas, String nomeArquivo) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(nomeArquivo))) {
+
+            // 1. Grava o cabeçalho manualmente
+            writer.write(Fatura.getCabecalhoCsv());
+            writer.newLine();
+
+            // 2. Grava cada fatura usando o toString() que você criou
+            for (Fatura f : faturas) {
+                writer.write(f.toString());
+                writer.newLine();
+            }
+
+            writer.flush();
+            System.out.println("Arquivo CSV gerado com sucesso: " + nomeArquivo);
+
+        } catch (IOException e) {
+            System.err.println("Erro ao gerar CSV: " + e.getMessage());
+        }
+    }
 }

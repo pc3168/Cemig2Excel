@@ -2,20 +2,26 @@ package org.example.model;
 
 public class Fatura {
 
+    /*ReferenteVencimento*/
+    private String anoMesReferencia;
+    private String vencimento;
+    private String valorPagar;
     private String numeroNF;
     private String serie;
     private String dataEmissao;
     private String chaveAcesso;
     private String protocoloAutorizacao;
+    /*unidade consumidora*/
     private String unidadeConsumidora;
-    private String codDebitoAutomatico;
-    private String vencimento;
-    private String totalPagar;
+
+    /*Informações Técnicas*/
     private String tipoMedicao;
     private String medicao;
     private String leituraAnterior;
     private String leituraAtual;
     private String consumoKWh;
+
+    /*Reservado ao Fisco*/
     private String icmsBase;
     private String icmsAliquota;
     private String icmsValor;
@@ -74,12 +80,12 @@ public class Fatura {
         this.unidadeConsumidora = unidadeConsumidora;
     }
 
-    public String getCodDebitoAutomatico() {
-        return codDebitoAutomatico;
+    public String getValorPagar() {
+        return valorPagar;
     }
 
-    public void setCodDebitoAutomatico(String codDebitoAutomatico) {
-        this.codDebitoAutomatico = codDebitoAutomatico;
+    public void setValorPagar(String valorPagar) {
+        this.valorPagar = valorPagar;
     }
 
     public String getVencimento() {
@@ -90,13 +96,6 @@ public class Fatura {
         this.vencimento = vencimento;
     }
 
-    public String getTotalPagar() {
-        return totalPagar;
-    }
-
-    public void setTotalPagar(String totalPagar) {
-        this.totalPagar = totalPagar;
-    }
 
     public String getTipoMedicao() {
         return tipoMedicao;
@@ -210,32 +209,45 @@ public class Fatura {
         this.cofinsValor = cofinsValor;
     }
 
+    public String getAnoMesReferencia() {
+        return anoMesReferencia;
+    }
+
+    public void setAnoMesReferencia(String anoMesReferencia) {
+        this.anoMesReferencia = anoMesReferencia;
+    }
+
     @Override
     public String toString() {
-        return "Fatura{" +
-                "numeroNF='" + numeroNF + '\'' +
-                ", serie='" + serie + '\'' +
-                ", dataEmissao='" + dataEmissao + '\'' +
-                ", chaveAcesso='" + chaveAcesso + '\'' +
-                ", protocoloAutorizacao='" + protocoloAutorizacao + '\'' +
-                ", unidadeConsumidora='" + unidadeConsumidora + '\'' +
-                ", codDebitoAutomatico='" + codDebitoAutomatico + '\'' +
-                ", vencimento='" + vencimento + '\'' +
-                ", totalPagar='" + totalPagar + '\'' +
-                ", tipoMedicao='" + tipoMedicao + '\'' +
-                ", medicao='" + medicao + '\'' +
-                ", leituraAnterior='" + leituraAnterior + '\'' +
-                ", leituraAtual='" + leituraAtual + '\'' +
-                ", consumoKWh='" + consumoKWh + '\'' +
-                ", icmsBase='" + icmsBase + '\'' +
-                ", icmsAliquota='" + icmsAliquota + '\'' +
-                ", icmsValor='" + icmsValor + '\'' +
-                ", pasepBase='" + pasepBase + '\'' +
-                ", pasepAliquota='" + pasepAliquota + '\'' +
-                ", pasepValor='" + pasepValor + '\'' +
-                ", cofinsBase='" + cofinsBase + '\'' +
-                ", cofinsAliquota='" + cofinsAliquota + '\'' +
-                ", cofinsValor='" + cofinsValor + '\'' +
-                '}';
+        return String.join(";",
+                anoMesReferencia,
+                vencimento,
+                valorPagar,
+                numeroNF,
+                serie,
+                dataEmissao,
+                chaveAcesso,
+                protocoloAutorizacao,
+                unidadeConsumidora,
+                tipoMedicao,
+                medicao,
+                leituraAnterior,
+                leituraAtual,
+                consumoKWh,
+                icmsBase,
+                icmsAliquota,
+                icmsValor,
+                pasepBase,
+                pasepAliquota,
+                pasepValor,
+                cofinsBase,
+                cofinsAliquota,
+                cofinsValor
+        );
+    }
+
+    // Método auxiliar para o cabeçalho (opcional, mas muito útil)
+    public static String getCabecalhoCsv() {
+        return "Mês Ref;Vencimento;Valor a Pagar;Nº NF;Série;Emissão;Chave;Protocolo;UC;Medição;Valor Medido;Leitura Ant;Leitura Atual;Consumo KWh;ICMS Base;ICMS Alíquota;ICMS Valor;PASEP Base;PASEP Alíquota;PASEP Valor;COFINS Base;COFINS Alíquota;COFINS Valor";
     }
 }
