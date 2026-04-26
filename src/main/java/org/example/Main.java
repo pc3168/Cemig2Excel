@@ -39,7 +39,7 @@ public class Main {
 
         } else if(args[0].equalsIgnoreCase("--v") || args[0].equalsIgnoreCase("-v")){
             System.out.println("versão do sistema " + version);
-        } else if (args[0].equalsIgnoreCase("--cli") || args[0].equalsIgnoreCase("comando")) {
+        } else if (args[0].equalsIgnoreCase("--cli") ) {
 
             if (LocalDate.now().isAfter(DATA_LIMITE)) {
                 System.out.println(mensagem);
