@@ -11,38 +11,45 @@ import java.util.List;
 
 public class FaturaProcessor {
 
-    public void processarDiretorio(String path) {
+    public void processarDiretorio(String origem, String destino) {
         List<Fatura> faturasProcessadas = new ArrayList<>();
-        File pasta = new File(path);
+        File pasta = new File(origem);
 
         for (File f : pasta.listFiles((dir, name) -> name.toLowerCase().endsWith(".pdf"))) {
+            //if (!f.getName().equals("21042026140947.pdf")) continue;
+            try{
+                LerPdfParser leitor = new LerPdfParser(f);
+                leitor.lerPdf();
 
-            LerPdfParser leitor = new LerPdfParser(f);
-            leitor.lerPdf();
-
-                // Transfere os dados para o DTO (objetos menores)
-            FaturaBruta dados = new FaturaBruta(
-                    leitor.cabecalho(),
-                    leitor.valoresFaturados(),
-                    leitor.historicoConsumo(),
-                    leitor.reservadoFisco(),
-                    leitor.dadosPessoais(),
-                    leitor.unidadeConsumidora(),
-                    leitor.referenteVencimento(),
-                    leitor.informacoesGerais(),
-                    leitor.informacoesTecnicas()
-            );
+                FaturaBruta dados = new FaturaBruta(
+                        leitor.cabecalho(),
+                        leitor.valoresFaturados(),
+                        leitor.historicoConsumo(),
+                        leitor.reservadoFisco(),
+                        leitor.dadosPessoais(),
+                        leitor.unidadeConsumidora(),
+                        leitor.referenteVencimento(),
+                        leitor.informacoesGerais(),
+                        leitor.informacoesTecnicas()
+                );
 
 
-            FaturaParser faturaParser = new FaturaParser(dados);
-            Fatura faturaLimpa = faturaParser.getFatura();
-            faturasProcessadas.add(faturaLimpa);
-            System.out.println("=================================");
-            System.out.println(faturaLimpa);
-            System.out.println("=================================");
+                FaturaParser faturaParser = new FaturaParser(dados, f.getName());
+                Fatura faturaLimpa = faturaParser.getFatura();
+                faturasProcessadas.add(faturaLimpa);
+                System.out.println("=================================");
+                System.out.println(faturaLimpa);
+                System.out.println("=================================");
+            }catch (Exception e){
+                LogErro.gravarErro(f.getName(), e.getMessage());
+            }
 
         }
-        ExcelExporter.gerarCSVToString(faturasProcessadas, "saida/" + gerarNomeArquivo());
+        try{
+            ExcelExporter.gerarCSVToString(faturasProcessadas, destino + gerarNomeArquivo());
+        } catch (Exception e) {
+            LogErro.gravarErro("", "Erro ao gerar arquivo CSV. "+e.getMessage());
+        }
     }
 
     private String gerarNomeArquivo(){

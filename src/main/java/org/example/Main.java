@@ -1,7 +1,9 @@
 package org.example;
 
+import org.example.form.TelaProcessador;
 import org.example.util.FaturaProcessor;
 
+import javax.swing.*;
 import java.io.File;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -12,11 +14,13 @@ public class Main {
         //File file = new File("cemig/22042026210315.pdf");
         //File file = new File("cemig/22042026210325.pdf");
 
-        FaturaProcessor faturaProcessor = new FaturaProcessor();
-        faturaProcessor.processarDiretorio("cemig");
+//        SwingUtilities.invokeLater(() -> {
+//            new TelaProcessador().setVisible(true);
+//        });
 
-//        LerPdfToList lerPdfToList = new LerPdfToList(file);
-//        lerPdfToList.lerPdf();
+        FaturaProcessor faturaProcessor = new FaturaProcessor();
+        faturaProcessor.processarDiretorio("cemig", "saida/");
+
 //
 //        System.out.println("==================================");
 //        System.out.println(lerPdfToList.valoresFaturados());

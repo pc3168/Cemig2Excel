@@ -12,21 +12,22 @@ import java.util.List;
 
 public class ExcelExporter {
 
-    public static void gerarCSV(List<Fatura> faturas, String nomeArquivo) {
-        try (
-                BufferedWriter writer = Files.newBufferedWriter(Paths.get(nomeArquivo));
-                CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-                        .withDelimiter(';') // Facilita abrir no Excel brasileiro
-                        .withHeader("Chave", "data emissao"))
-        ) {
-            for (Fatura f : faturas) {
-                csvPrinter.printRecord(
-                        f.getChaveAcesso(),
-                        f.getDataEmissao()
-                );
-            }
 
-            csvPrinter.flush();
+    public static void gerarCSVToString(String origem ,Fatura fatura, String nomeArquivo) {
+        try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(nomeArquivo))) {
+
+            // 1. Grava o cabeçalho manualmente
+            writer.write("Nome Arquivo;");
+            writer.write(Fatura.getCabecalhoCsv(1));
+            writer.newLine();
+
+            // 2. Grava cada fatura usando o toString() que você criou
+            writer.write(origem);
+            writer.write(";");
+            writer.write(fatura.getLinhaCsv(1));
+            writer.newLine();
+
+            writer.flush();
             System.out.println("Arquivo CSV gerado com sucesso: " + nomeArquivo);
 
         } catch (IOException e) {
@@ -38,12 +39,12 @@ public class ExcelExporter {
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(nomeArquivo))) {
 
             // 1. Grava o cabeçalho manualmente
-            writer.write(Fatura.getCabecalhoCsv());
+            writer.write(Fatura.getCabecalhoCsv(1));
             writer.newLine();
 
             // 2. Grava cada fatura usando o toString() que você criou
             for (Fatura f : faturas) {
-                writer.write(f.toString());
+                writer.write(f.getLinhaCsv(1));
                 writer.newLine();
             }
 

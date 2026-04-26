@@ -9,16 +9,20 @@ import java.util.regex.Pattern;
 
 public class FaturaParser {
 
-    private FaturaBruta faturaBruta;
-    private Fatura fatura;
+    private final FaturaBruta faturaBruta;
+    private final Fatura fatura;
+    private final String nomeArquivo;
 
-    public FaturaParser(FaturaBruta faturaBruta) {
+    public FaturaParser(FaturaBruta faturaBruta, String nomeArquivo) {
         this.faturaBruta = faturaBruta;
+        this.nomeArquivo = nomeArquivo;
         this.fatura = new Fatura();
         converterReferenteVencimento();
         converterUnidadeConsumidora();
         converterInformacoesTecnicas();
         converterReservadoFisco();
+        converterInformacoesGerais();
+        converterValoresFaturados();
     }
 
     private Fatura converterCabecalho() {
@@ -26,6 +30,39 @@ public class FaturaParser {
     }
 
     private Fatura converterValoresFaturados() {
+        String valor = faturaBruta.valoresFaturados();
+        String[] split = valor.split(System.lineSeparator());
+        String[] splitLinha = null;
+        for (String linha : split){
+            try{
+                if (linha.contains("Energia Elétrica")){
+                    splitLinha = linha.split("\\s+");
+                    fatura.setEnergiaEletricaUnidade(splitLinha[2]);
+                    fatura.setEnergiaEletricaQuantidade(splitLinha[3]);
+                    fatura.setEnergiaEletricaPrecoUnit(splitLinha[4]);
+                    fatura.setEnergiaEletricaValor(splitLinha[5]);
+                }else if(linha.contains("Energia compensada")){
+                    splitLinha = linha.split("\\s+");
+                    int sequencia = -1;
+                    for (int i = 0; i < splitLinha.length; i++) {
+                        if (splitLinha[i].toLowerCase().matches(".*[km]?wh.*")) {
+                            sequencia = i;
+                        }
+                        if (sequencia > 0){
+                            fatura.setEnergiaCompensadaUnidade(splitLinha[sequencia]);
+                            fatura.setEnergiaCompensadaQuantidade(splitLinha[sequencia+1]);
+                            fatura.setEnergiaCompensadaPrecoUnit(splitLinha[sequencia+2]);
+                            fatura.setEnergiaCompensadaValor(splitLinha[sequencia+3]);
+                        }
+                    }
+
+                }else if(linha.contains("Contrib Ilum Publica Municipal")){
+                    fatura.setContribIlumPublicaMunicipalValor(extrairValor(linha));
+                }
+            }catch (Exception e){
+                throw new RuntimeException("Erro ao converter o campo Valores Faturados, " + e.getMessage());
+            }
+        }
         return fatura;
     }
 
@@ -34,21 +71,27 @@ public class FaturaParser {
     }
 
     private Fatura converterReservadoFisco() {
-        String valor = faturaBruta.reservadoFisco();
-        String[] icms = extrairLinhaImposto(valor, "ICMS");
-        String[] pasep = extrairLinhaImposto(valor, "PASEP");
-        String[] cofins = extrairLinhaImposto(valor, "COFINS");
-        fatura.setIcmsBase(icms[0]);
-        fatura.setIcmsAliquota(icms[1]);
-        fatura.setIcmsValor(icms[2]);
-
-        fatura.setPasepBase(pasep[0]);
-        fatura.setPasepAliquota(pasep[1]);
-        fatura.setPasepValor(pasep[2]);
-
-        fatura.setCofinsBase(cofins[0]);
-        fatura.setCofinsAliquota(cofins[1]);
-        fatura.setCofinsValor(cofins[2]);
+        try{
+            String valor = faturaBruta.reservadoFisco();
+            String[] icms = extrairLinhaImposto(valor, "ICMS");
+            String[] pasep = extrairLinhaImposto(valor, "PASEP");
+            String[] cofins = extrairLinhaImposto(valor, "COFINS");
+            if (icms != null){
+                fatura.setIcmsBase(icms[0]);
+                fatura.setIcmsAliquota(icms[1]);
+                fatura.setIcmsValor(icms[2]);
+            }else if(pasep != null){
+                fatura.setPasepBase(pasep[0]);
+                fatura.setPasepAliquota(pasep[1]);
+                fatura.setPasepValor(pasep[2]);
+            }else if(cofins != null){
+                fatura.setCofinsBase(cofins[0]);
+                fatura.setCofinsAliquota(cofins[1]);
+                fatura.setCofinsValor(cofins[2]);
+            }
+        }catch (Exception e){
+            throw new RuntimeException("Erro ao converter o campo Reservado ao Fisco, " + e.getMessage());
+        }
         return fatura;
     }
 
@@ -78,6 +121,13 @@ public class FaturaParser {
     }
 
     private Fatura converterInformacoesGerais() {
+        String valor = faturaBruta.informacoesGerais();
+        String dado = extrairSaldoGeracao(valor);
+        if (dado == null){
+            LogErro.gravarErro(nomeArquivo, "Erro ao obter o valor do saldo Atual de geração.");
+            dado = "0";
+        }
+        fatura.setSaldoAtualDeGeracao(dado);
         return fatura;
     }
 
@@ -145,31 +195,6 @@ public class FaturaParser {
         return null;
     }
 
-    private String extrairNumeroNota(String texto) {
-        if (texto == null) return "";
-
-        // Procura por "Nº" seguido de espaços (opcional) e captura os dígitos
-        Pattern pattern = Pattern.compile("Nº\\s*(\\d+)");
-        Matcher matcher = pattern.matcher(texto);
-
-        if (matcher.find()) {
-            return matcher.group(1); // Retorna "251723252"
-        }
-        return "";
-    }
-
-    private String extrairSerieNota(String texto) {
-        if (texto == null) return "";
-
-        // Procura por "SÉRIE" seguido de espaços e captura os dígitos
-        Pattern pattern = Pattern.compile("SÉRIE\\s*(\\d+)");
-        Matcher matcher = pattern.matcher(texto);
-
-        if (matcher.find()) {
-            return matcher.group(1); // Retorna "000"
-        }
-        return "";
-    }
 
     private  String extrairDadoPorLabel(String texto, String label) {
         if (texto == null || label == null) return "";
@@ -186,10 +211,10 @@ public class FaturaParser {
         if (matcher.find()) {
             return matcher.group(1);
         }
-        return "";
+        return null;
     }
 
-    private static String[] extrairLinhaImposto(String texto, String imposto) {
+    private String[] extrairLinhaImposto(String texto, String imposto) {
         // Regex: Procura o nome do imposto e captura as 3 sequências de números/vírgulas à frente
         String regex = imposto + "\\s+([\\d,.]+)\\s+([\\d,.]+)\\s+([\\d,.]+)";
 
@@ -203,7 +228,28 @@ public class FaturaParser {
                     matcher.group(3)  // Valor do Imposto
             };
         }
-        return new String[] {"0,00", "0,00", "0,00"};
+        //return new String[] {"0,00", "0,00", "0,00"};
+        return null;
+    }
+
+    public String extrairSaldoGeracao(String texto) {
+        if (texto == null) return "";
+
+        // Alteração na Regex:
+        // [kKMm]? -> Opcional: aceita k, K, M, m (ou nenhum)
+        // Wh -> A unidade base
+        String regex = "SALDO\\s+ATUAL\\s+DE\\s+GERAÇÃO:\\s*([\\d,.]+)\\s*([kKMm]?Wh)";
+
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(texto);
+
+
+        if (matcher.find()) {
+            String valor = matcher.group(1);
+            String unidade = matcher.group(2); // "kWh" ou "Wh"
+            return valor + " " + unidade; // Retorna "8.843,44 kWh"
+        }
+        return null;
     }
 
 }

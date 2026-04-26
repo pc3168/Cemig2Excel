@@ -32,6 +32,20 @@ public class Fatura {
     private String cofinsAliquota;
     private String cofinsValor;
 
+    /*informações gerais*/
+    private String energiaEletricaUnidade;
+    private String energiaEletricaQuantidade;
+    private String energiaEletricaPrecoUnit;
+    private String energiaEletricaValor;
+    private String energiaCompensadaUnidade;
+    private String energiaCompensadaQuantidade;
+    private String energiaCompensadaPrecoUnit;
+    private String energiaCompensadaValor;
+    private String contribIlumPublicaMunicipalValor;
+
+    /*informação gerais*/
+    private String saldoAtualDeGeracao;
+
     public String getNumeroNF() {
         return numeroNF;
     }
@@ -217,37 +231,192 @@ public class Fatura {
         this.anoMesReferencia = anoMesReferencia;
     }
 
-    @Override
-    public String toString() {
-        return String.join(";",
-                anoMesReferencia,
-                vencimento,
-                valorPagar,
-                numeroNF,
-                serie,
-                dataEmissao,
-                chaveAcesso,
-                protocoloAutorizacao,
-                unidadeConsumidora,
-                tipoMedicao,
-                medicao,
-                leituraAnterior,
-                leituraAtual,
-                consumoKWh,
-                icmsBase,
-                icmsAliquota,
-                icmsValor,
-                pasepBase,
-                pasepAliquota,
-                pasepValor,
-                cofinsBase,
-                cofinsAliquota,
-                cofinsValor
-        );
+    public String getEnergiaEletricaUnidade() {
+        return energiaEletricaUnidade;
     }
 
-    // Método auxiliar para o cabeçalho (opcional, mas muito útil)
-    public static String getCabecalhoCsv() {
+    public void setEnergiaEletricaUnidade(String energiaEletricaUnidade) {
+        this.energiaEletricaUnidade = energiaEletricaUnidade;
+    }
+
+    public String getEnergiaEletricaQuantidade() {
+        return energiaEletricaQuantidade;
+    }
+
+    public void setEnergiaEletricaQuantidade(String energiaEletricaQuantidade) {
+        this.energiaEletricaQuantidade = energiaEletricaQuantidade;
+    }
+
+    public String getEnergiaEletricaPrecoUnit() {
+        return energiaEletricaPrecoUnit;
+    }
+
+    public void setEnergiaEletricaPrecoUnit(String energiaEletricaPrecoUnit) {
+        this.energiaEletricaPrecoUnit = energiaEletricaPrecoUnit;
+    }
+
+    public String getEnergiaEletricaValor() {
+        return energiaEletricaValor;
+    }
+
+    public void setEnergiaEletricaValor(String energiaEletricaValor) {
+        this.energiaEletricaValor = energiaEletricaValor;
+    }
+
+    public String getEnergiaCompensadaUnidade() {
+        return energiaCompensadaUnidade;
+    }
+
+    public void setEnergiaCompensadaUnidade(String energiaCompensadaUnidade) {
+        this.energiaCompensadaUnidade = energiaCompensadaUnidade;
+    }
+
+    public String getEnergiaCompensadaQuantidade() {
+        return energiaCompensadaQuantidade;
+    }
+
+    public void setEnergiaCompensadaQuantidade(String energiaCompensadaQuantidade) {
+        this.energiaCompensadaQuantidade = energiaCompensadaQuantidade;
+    }
+
+    public String getEnergiaCompensadaPrecoUnit() {
+        return energiaCompensadaPrecoUnit;
+    }
+
+    public void setEnergiaCompensadaPrecoUnit(String energiaCompensadaPrecoUnit) {
+        this.energiaCompensadaPrecoUnit = energiaCompensadaPrecoUnit;
+    }
+
+    public String getEnergiaCompensadaValor() {
+        return energiaCompensadaValor;
+    }
+
+    public void setEnergiaCompensadaValor(String energiaCompensadaValor) {
+        this.energiaCompensadaValor = energiaCompensadaValor;
+    }
+
+    public String getContribIlumPublicaMunicipalValor() {
+        return contribIlumPublicaMunicipalValor;
+    }
+
+    public void setContribIlumPublicaMunicipalValor(String contribIlumPublicaMunicipalValor) {
+        this.contribIlumPublicaMunicipalValor = contribIlumPublicaMunicipalValor;
+    }
+
+    public String getSaldoAtualDeGeracao() {
+        return saldoAtualDeGeracao;
+    }
+
+    public void setSaldoAtualDeGeracao(String saldoAtualDeGeracao) {
+        this.saldoAtualDeGeracao = saldoAtualDeGeracao;
+    }
+
+//    @Override
+//    public String toString() {
+//        return String.join(";",
+//                anoMesReferencia,
+//                vencimento,
+//                valorPagar,
+//                numeroNF,
+//                serie,
+//                dataEmissao,
+//                chaveAcesso,
+//                protocoloAutorizacao,
+//                unidadeConsumidora,
+//                tipoMedicao,
+//                medicao,
+//                leituraAnterior,
+//                leituraAtual,
+//                consumoKWh,
+//                icmsBase,
+//                icmsAliquota,
+//                icmsValor,
+//                pasepBase,
+//                pasepAliquota,
+//                pasepValor,
+//                cofinsBase,
+//                cofinsAliquota,
+//                cofinsValor,
+//                energiaEletricaUnidade,
+//                energiaEletricaQuantidade,
+//                energiaEletricaPrecoUnit,
+//                energiaEletricaValor,
+//                energiaCompensadaUnidade,
+//                energiaCompensadaQuantidade,
+//                energiaCompensadaPrecoUnit,
+//                energiaCompensadaValor,
+//                contribIlumPublicaMunicipalValor,
+//                saldoAtualDeGeracao
+//        );
+//    }
+
+
+
+    public static String getCabecalhoCsv(int i) {
+        if (i == 1){
+            return "Mês Ref;Vencimento;Valor a pagar(R$);Unidade Consumidora;Consumo kWh;Saldo Atual;Energia Elétrica Unidade;Energia Elétrica Quant;Energia Elétrica Preço Unit;Energia compensada Unidade;Energia compensada Quant;Energia compensada Preço Unit;Contrib Ilum Publica Municipal;";
+        }
         return "Mês Ref;Vencimento;Valor a Pagar;Nº NF;Série;Emissão;Chave;Protocolo;UC;Medição;Valor Medido;Leitura Ant;Leitura Atual;Consumo KWh;ICMS Base;ICMS Alíquota;ICMS Valor;PASEP Base;PASEP Alíquota;PASEP Valor;COFINS Base;COFINS Alíquota;COFINS Valor";
+    }
+
+    public String getLinhaCsv(int i){
+        if (i == 1){
+            return String.join(";",
+                    anoMesReferencia,
+                    vencimento,
+                    valorPagar,
+                    unidadeConsumidora,
+                    consumoKWh,
+                    saldoAtualDeGeracao,
+                    energiaCompensadaUnidade,
+                    energiaCompensadaQuantidade,
+                    energiaCompensadaPrecoUnit,
+                    energiaCompensadaUnidade,
+                    energiaCompensadaQuantidade,
+                    energiaCompensadaPrecoUnit,
+                    contribIlumPublicaMunicipalValor
+            );
+        }
+        return toString();
+    }
+
+
+    @Override
+    public String toString() {
+        return "Fatura{" +
+                "anoMesReferencia='" + anoMesReferencia + '\'' +
+                ", vencimento='" + vencimento + '\'' +
+                ", valorPagar='" + valorPagar + '\'' +
+                ", numeroNF='" + numeroNF + '\'' +
+                ", serie='" + serie + '\'' +
+                ", dataEmissao='" + dataEmissao + '\'' +
+                ", chaveAcesso='" + chaveAcesso + '\'' +
+                ", protocoloAutorizacao='" + protocoloAutorizacao + '\'' +
+                ", unidadeConsumidora='" + unidadeConsumidora + '\'' +
+                ", tipoMedicao='" + tipoMedicao + '\'' +
+                ", medicao='" + medicao + '\'' +
+                ", leituraAnterior='" + leituraAnterior + '\'' +
+                ", leituraAtual='" + leituraAtual + '\'' +
+                ", consumoKWh='" + consumoKWh + '\'' +
+                ", icmsBase='" + icmsBase + '\'' +
+                ", icmsAliquota='" + icmsAliquota + '\'' +
+                ", icmsValor='" + icmsValor + '\'' +
+                ", pasepBase='" + pasepBase + '\'' +
+                ", pasepAliquota='" + pasepAliquota + '\'' +
+                ", pasepValor='" + pasepValor + '\'' +
+                ", cofinsBase='" + cofinsBase + '\'' +
+                ", cofinsAliquota='" + cofinsAliquota + '\'' +
+                ", cofinsValor='" + cofinsValor + '\'' +
+                ", energiaEletricaUnidade='" + energiaEletricaUnidade + '\'' +
+                ", energiaEletricaQuantidade='" + energiaEletricaQuantidade + '\'' +
+                ", energiaEletricaPrecoUnit='" + energiaEletricaPrecoUnit + '\'' +
+                ", energiaEletricaValor='" + energiaEletricaValor + '\'' +
+                ", energiaCompensadaUnidade='" + energiaCompensadaUnidade + '\'' +
+                ", energiaCompensadaQuantidade='" + energiaCompensadaQuantidade + '\'' +
+                ", energiaCompensadaPrecoUnit='" + energiaCompensadaPrecoUnit + '\'' +
+                ", energiaCompensadaValor='" + energiaCompensadaValor + '\'' +
+                ", contribIlumPublicaMunicipalValor='" + contribIlumPublicaMunicipalValor + '\'' +
+                ", saldoAtualDeGeracao='" + saldoAtualDeGeracao + '\'' +
+                '}';
     }
 }
