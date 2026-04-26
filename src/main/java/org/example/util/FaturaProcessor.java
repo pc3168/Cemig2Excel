@@ -2,6 +2,7 @@ package org.example.util;
 
 import org.example.model.Fatura;
 import org.example.model.FaturaBruta;
+import org.example.model.Parametro;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -10,6 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FaturaProcessor {
+
+    private Parametro parametro;
+
+    public FaturaProcessor(Parametro parametro) {
+        this.parametro = parametro;
+    }
 
     private static final String NOME_ARQUIVO_CSV = gerarNomeArquivo();
 
@@ -37,21 +44,18 @@ public class FaturaProcessor {
 
                 FaturaParser faturaParser = new FaturaParser(dados, f.getName());
                 Fatura faturaLimpa = faturaParser.getFatura();
-                System.out.println("=================================");
-                System.out.println(faturaLimpa);
-                System.out.println("=================================");
+                if (parametro.getParametro().equalsIgnoreCase("--cli")){
+                    System.out.println("=================================");
+                    System.out.println(faturaLimpa);
+                    System.out.println("=================================");
+                }
 
-                ExcelExporter.gerarCSVToString(f.getName(), faturaLimpa, destino + File.pathSeparator + NOME_ARQUIVO_CSV);
+                ExcelExporter.gerarCSVToString(faturaLimpa, destino + File.separator + NOME_ARQUIVO_CSV);
             }catch (Exception e){
                 LogErro.gravarErro(f.getName(), e.getMessage());
             }
 
         }
-        /*try{
-            ExcelExporter.gerarCSVToString(faturasProcessadas, destino + gerarNomeArquivo());
-        } catch (Exception e) {
-            LogErro.gravarErro("", "Erro ao gerar arquivo CSV. "+e.getMessage());
-        }*/
     }
 
     private static String gerarNomeArquivo(){

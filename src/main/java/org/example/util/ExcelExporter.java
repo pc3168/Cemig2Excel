@@ -15,7 +15,7 @@ import java.util.List;
 public class ExcelExporter {
 
 
-    public static void gerarCSVToString(String origem, Fatura fatura, String nomeArquivo) {
+    public static void gerarCSVToString(Fatura fatura, String nomeArquivo) {
         File arquivo = new File(nomeArquivo);
         boolean arquivoExiste = arquivo.exists();
 
@@ -28,20 +28,17 @@ public class ExcelExporter {
 
             // 1. Só grava o cabeçalho se o arquivo for novo (não existia antes)
             if (!arquivoExiste) {
-                writer.write("Nome Arquivo;");
                 writer.write(Fatura.getCabecalhoCsv(1));
                 writer.newLine();
             }
 
-            // 2. Grava a linha da fatura atual
-            writer.write(origem + ";");
             writer.write(fatura.getLinhaCsv(1));
             writer.newLine();
 
             writer.flush();
         } catch (IOException e) {
             System.err.println("Erro ao gerar CSV: " + e.getMessage());
-            LogErro.gravarErro(origem, "Gravação CSV, " + e.getMessage());
+            LogErro.gravarErro(fatura.getNomeArquivoOrigem(), "Gravação CSV, " + e.getMessage());
         }
     }
 

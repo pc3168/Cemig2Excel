@@ -1,5 +1,6 @@
 package org.example.form;
 
+import org.example.model.Parametro;
 import org.example.util.FaturaProcessor;
 
 import javax.swing.*;
@@ -128,7 +129,7 @@ public class TelaProcessador extends JFrame {
             btnProcessar.setEnabled(false);
             btnProcessar.setText("Processando...");
 
-            FaturaProcessor faturaProcessor = new FaturaProcessor();
+            FaturaProcessor faturaProcessor = new FaturaProcessor(Parametro.GUI);
             faturaProcessor.processarDiretorio(entrada, saida);
 
             JOptionPane.showMessageDialog(this, "Sucesso! Arquivo gerado na pasta de saída.");

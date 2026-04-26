@@ -2,6 +2,8 @@ package org.example.model;
 
 public class Fatura {
 
+    private String nomeArquivoOrigem;
+
     /*ReferenteVencimento*/
     private String anoMesReferencia;
     private String vencimento;
@@ -311,6 +313,14 @@ public class Fatura {
         this.saldoAtualDeGeracao = saldoAtualDeGeracao;
     }
 
+    public String getNomeArquivoOrigem() {
+        return nomeArquivoOrigem;
+    }
+
+    public void setNomeArquivoOrigem(String nomeArquivoOrigem) {
+        this.nomeArquivoOrigem = nomeArquivoOrigem;
+    }
+
 //    @Override
 //    public String toString() {
 //        return String.join(";",
@@ -354,7 +364,7 @@ public class Fatura {
 
     public static String getCabecalhoCsv(int i) {
         if (i == 1){
-            return "Mês Ref;Vencimento;Valor a pagar(R$);Unidade Consumidora;Consumo kWh;Saldo Atual;Energia Elétrica Unidade;Energia Elétrica Quant;Energia Elétrica Preço Unit;Energia compensada Unidade;Energia compensada Quant;Energia compensada Preço Unit;Contrib Ilum Publica Municipal;";
+            return "Nome Arquivo; Mês Ref;Vencimento;Valor a pagar(R$);Unidade Consumidora;Consumo kWh;Saldo Atual;Energia Elétrica Unidade;Energia Elétrica Quant;Energia Elétrica Preço Unit;Energia compensada Unidade;Energia compensada Quant;Energia compensada Preço Unit;Contrib Ilum Publica Municipal;";
         }
         return "Mês Ref;Vencimento;Valor a Pagar;Nº NF;Série;Emissão;Chave;Protocolo;UC;Medição;Valor Medido;Leitura Ant;Leitura Atual;Consumo KWh;ICMS Base;ICMS Alíquota;ICMS Valor;PASEP Base;PASEP Alíquota;PASEP Valor;COFINS Base;COFINS Alíquota;COFINS Valor";
     }
@@ -362,6 +372,7 @@ public class Fatura {
     public String getLinhaCsv(int i){
         if (i == 1){
             return String.join(";",
+                    nomeArquivoOrigem,
                     anoMesReferencia,
                     vencimento,
                     valorPagar,
@@ -384,7 +395,8 @@ public class Fatura {
     @Override
     public String toString() {
         return "Fatura{" +
-                "anoMesReferencia='" + anoMesReferencia + '\'' +
+                "nomeArquivoOrigem='" + nomeArquivoOrigem + '\'' +
+                ", anoMesReferencia='" + anoMesReferencia + '\'' +
                 ", vencimento='" + vencimento + '\'' +
                 ", valorPagar='" + valorPagar + '\'' +
                 ", numeroNF='" + numeroNF + '\'' +

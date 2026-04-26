@@ -11,12 +11,11 @@ public class FaturaParser {
 
     private final FaturaBruta faturaBruta;
     private final Fatura fatura;
-    private final String nomeArquivo;
 
     public FaturaParser(FaturaBruta faturaBruta, String nomeArquivo) {
         this.faturaBruta = faturaBruta;
-        this.nomeArquivo = nomeArquivo;
         this.fatura = new Fatura();
+        fatura.setNomeArquivoOrigem(nomeArquivo);
         converterReferenteVencimento();
         converterUnidadeConsumidora();
         converterInformacoesTecnicas();
@@ -133,7 +132,7 @@ public class FaturaParser {
             String valor = faturaBruta.informacoesGerais();
             String dado = extrairSaldoGeracao(valor);
             if (dado == null){
-                LogErro.gravarErro(nomeArquivo, "Erro ao obter o valor do saldo Atual de geração.");
+                LogErro.gravarErro(fatura.getNomeArquivoOrigem(), "Erro ao obter o valor do saldo Atual de geração.");
                 dado = "0";
             }
             fatura.setSaldoAtualDeGeracao(dado);

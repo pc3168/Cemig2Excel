@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.form.TelaProcessador;
+import org.example.model.Parametro;
 import org.example.util.FaturaProcessor;
 
 import javax.swing.*;
@@ -10,37 +11,44 @@ import java.io.File;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        File file = new File("cemig/22042026210255.pdf");
-        //File file = new File("cemig/22042026210315.pdf");
-        //File file = new File("cemig/22042026210325.pdf");
-
-        SwingUtilities.invokeLater(() -> {
-            new TelaProcessador().setVisible(true);
-        });
 
 //        FaturaProcessor faturaProcessor = new FaturaProcessor();
 //        faturaProcessor.processarDiretorio("cemig", "saida/");
 
-//
-//        System.out.println("==================================");
-//        System.out.println(lerPdfToList.valoresFaturados());
-//        System.out.println("==================================");
-//        System.out.println(lerPdfToList.informacoesGerais());
-//        System.out.println("==================================");
-//        System.out.println(lerPdfToList.informacoesTecnicas());
-//        System.out.println("==================================");
-//        System.out.println(lerPdfToList.historicoConsumo());
-//        System.out.println("==================================");
-//        System.out.println(lerPdfToList.cabecalho());
-//        System.out.println("==================================");
-//        System.out.println(lerPdfToList.reservadoFisco());
-//        System.out.println("==================================");
-//        System.out.println(lerPdfToList.dadosPessoais());
-//        System.out.println("==================================");
-//        System.out.println(lerPdfToList.referenteVencimento());
-//        System.out.println("==================================");
-//        System.out.println(lerPdfToList.unidadeConsumidora());
-//        System.out.println("==================================");
+        // Se não houver argumentos ou o primeiro for "--gui" ou "grafica"
+        if (args.length == 0 || args[0].equalsIgnoreCase("--gui")) {
+
+            System.out.println("Iniciando interface gráfica...");
+            SwingUtilities.invokeLater(() -> {
+                new TelaProcessador().setVisible(true);
+            });
+
+        } else if (args[0].equalsIgnoreCase("--cli") || args[0].equalsIgnoreCase("comando")) {
+
+            // Esperamos: --cli [diretorio_entrada] [diretorio_saida]
+            if (args.length < 3) {
+                System.out.println("Erro: Argumentos insuficientes para linha de comando.");
+                System.out.println("Uso: java -jar Cemig2Excel.jar --cli <diretorio_entrada> <diretorio_saida>");
+                return;
+            }
+
+            String entrada = args[1];
+            String saida = args[2];
+
+            System.out.println("Iniciando processamento via CLI...");
+            System.out.println("Entrada: " + entrada);
+            System.out.println("Saída: " + saida);
+
+            FaturaProcessor faturaProcessor = new FaturaProcessor(Parametro.CLI);
+            faturaProcessor.processarDiretorio(entrada, saida);
+
+            System.out.println("Processamento finalizado!");
+
+        } else {
+            System.out.println("Comando não reconhecido.");
+            System.out.println("Opções: --gui | --cli <entrada> <saida>");
+        }
+
     }
 
 }
