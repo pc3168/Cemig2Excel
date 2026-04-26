@@ -100,46 +100,62 @@ public class FaturaParser {
     }
 
     private Fatura converterUnidadeConsumidora() {
-        String valor = faturaBruta.unidadeConsumidora();
-        String[] split = valor.split(System.lineSeparator());
-        fatura.setUnidadeConsumidora(split[1]);
+        try{
+            String valor = faturaBruta.unidadeConsumidora();
+            String[] split = valor.split(System.lineSeparator());
+            fatura.setUnidadeConsumidora(split[1]);
+        }catch (Exception e){
+            throw new RuntimeException("Erro ao converter o campo Unidade Consumidora, " + e.getMessage());
+        }
         return fatura;
     }
 
     private Fatura converterReferenteVencimento() {
-        String valor = faturaBruta.referenteVencimento();
-        String[] split = valor.split(System.lineSeparator());
-        fatura.setAnoMesReferencia(converterManual(split[1].substring(0,8)));
-        fatura.setVencimento(extrairData(split[1]));
-        fatura.setValorPagar(extrairValor(split[1]));
-        fatura.setNumeroNF(extrairDadoPorLabel(split[2], "N"));
-        fatura.setSerie(extrairDadoPorLabel(split[2], "SÉRIE"));
-        fatura.setDataEmissao(extrairData(split[3]));
-        fatura.setChaveAcesso(split[7]);
-        fatura.setProtocoloAutorizacao(extrairDadoPorLabel(split[8],"Protocolo de autorização"));
+        try{
+            String valor = faturaBruta.referenteVencimento();
+            String[] split = valor.split(System.lineSeparator());
+            fatura.setAnoMesReferencia(converterManual(split[1].substring(0,8)));
+            fatura.setVencimento(extrairData(split[1]));
+            fatura.setValorPagar(extrairValor(split[1]));
+            fatura.setNumeroNF(extrairDadoPorLabel(split[2], "N"));
+            fatura.setSerie(extrairDadoPorLabel(split[2], "SÉRIE"));
+            fatura.setDataEmissao(extrairData(split[3]));
+            fatura.setChaveAcesso(split[7]);
+            fatura.setProtocoloAutorizacao(extrairDadoPorLabel(split[8],"Protocolo de autorização"));
+        }catch (Exception e){
+            throw new RuntimeException("Erro ao converter o campo Referente a Vencimento, " + e.getMessage());
+        }
         return fatura;
     }
 
     private Fatura converterInformacoesGerais() {
-        String valor = faturaBruta.informacoesGerais();
-        String dado = extrairSaldoGeracao(valor);
-        if (dado == null){
-            LogErro.gravarErro(nomeArquivo, "Erro ao obter o valor do saldo Atual de geração.");
-            dado = "0";
+        try{
+            String valor = faturaBruta.informacoesGerais();
+            String dado = extrairSaldoGeracao(valor);
+            if (dado == null){
+                LogErro.gravarErro(nomeArquivo, "Erro ao obter o valor do saldo Atual de geração.");
+                dado = "0";
+            }
+            fatura.setSaldoAtualDeGeracao(dado);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao converter o campo Informações Gerais, " + e.getMessage());
         }
-        fatura.setSaldoAtualDeGeracao(dado);
         return fatura;
     }
 
     private Fatura converterInformacoesTecnicas() {
-        String valor = faturaBruta.informacoesTecnicas();
-        String[] split = valor.split(System.lineSeparator());
-        String[] ultimaLinha = split[3].split(" ");
-        fatura.setTipoMedicao(ultimaLinha[0] + " " + ultimaLinha[1]);
-        fatura.setMedicao(ultimaLinha[2]);
-        fatura.setLeituraAnterior(ultimaLinha[3]);
-        fatura.setLeituraAtual(ultimaLinha[4]);
-        fatura.setConsumoKWh(ultimaLinha[6]);
+        try{
+            String valor = faturaBruta.informacoesTecnicas();
+            String[] split = valor.split(System.lineSeparator());
+            String[] ultimaLinha = split[3].split(" ");
+            fatura.setTipoMedicao(ultimaLinha[0] + " " + ultimaLinha[1]);
+            fatura.setMedicao(ultimaLinha[2]);
+            fatura.setLeituraAnterior(ultimaLinha[3]);
+            fatura.setLeituraAtual(ultimaLinha[4]);
+            fatura.setConsumoKWh(ultimaLinha[6]);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao converter o campo Informações Tecnicas, " + e.getMessage());
+        }
         return fatura;
     }
 
@@ -161,8 +177,8 @@ public class FaturaParser {
                 default -> 0;
             };
             return String.valueOf(YearMonth.of(ano, mes));
-        } catch (Exception ex) {
-            return data;
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao converter ao fazer a validação da data de referencia, "+ data + " > " + e.getMessage());
         }
     }
 

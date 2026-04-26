@@ -1,7 +1,11 @@
 package org.example.form;
 
+import org.example.util.FaturaProcessor;
+
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.nio.file.Files;
 
 public class TelaProcessador extends JFrame {
 
@@ -53,8 +57,27 @@ public class TelaProcessador extends JFrame {
         add(btnProcessar, gbc);
 
         // --- Eventos dos Botões ---
-        btnSelecionarEntrada.addActionListener(e -> txtDiretorioEntrada.setText(selecionarPasta()));
-        btnSelecionarSaida.addActionListener(e -> txtDiretorioSaida.setText(selecionarPasta()));
+        btnSelecionarEntrada.addActionListener(e -> {
+            String pastaSelecionada = selecionarPasta(txtDiretorioEntrada.getText());
+
+            if (!pastaSelecionada.isEmpty()) {
+                txtDiretorioEntrada.setText(pastaSelecionada);
+
+                File sugestaoSaida = new File(pastaSelecionada, "saida");
+                txtDiretorioSaida.setText(sugestaoSaida.getAbsolutePath());
+
+                if (!sugestaoSaida.exists()) {
+                    sugestaoSaida.mkdirs();
+                }
+            }
+        });
+
+        btnSelecionarSaida.addActionListener(e -> {
+            String pasta = selecionarPasta(txtDiretorioSaida.getText());
+            if (!pasta.isEmpty()) {
+                txtDiretorioSaida.setText(pasta);
+            }
+        });
 
         btnProcessar.addActionListener(e -> {
             String entrada = txtDiretorioEntrada.getText();
@@ -80,15 +103,33 @@ public class TelaProcessador extends JFrame {
         return "";
     }
 
+    private String selecionarPasta(String caminhoInicial) {
+        JFileChooser chooser = new JFileChooser();
+
+        // Se o caminho informado existir, o seletor abre nele
+        if (caminhoInicial != null && !caminhoInicial.isEmpty()) {
+            File pastaInicial = new File(caminhoInicial);
+            if (pastaInicial.exists()) {
+                chooser.setCurrentDirectory(pastaInicial);
+            }
+        }
+
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int returnVal = chooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            return chooser.getSelectedFile().getAbsolutePath();
+        }
+        return "";
+    }
+
     private void iniciarProcessamento(String entrada, String saida) {
         try {
             // Desativa o botão para evitar cliques duplos
             btnProcessar.setEnabled(false);
             btnProcessar.setText("Processando...");
 
-            // Sua lógica aqui:
-            // FaturaProcessor processor = new FaturaProcessor();
-            // processor.processar(entrada, saida);
+            FaturaProcessor faturaProcessor = new FaturaProcessor();
+            faturaProcessor.processarDiretorio(entrada, saida);
 
             JOptionPane.showMessageDialog(this, "Sucesso! Arquivo gerado na pasta de saída.");
         } catch (Exception ex) {

@@ -14,12 +14,12 @@ public class Main {
         //File file = new File("cemig/22042026210315.pdf");
         //File file = new File("cemig/22042026210325.pdf");
 
-//        SwingUtilities.invokeLater(() -> {
-//            new TelaProcessador().setVisible(true);
-//        });
+        SwingUtilities.invokeLater(() -> {
+            new TelaProcessador().setVisible(true);
+        });
 
-        FaturaProcessor faturaProcessor = new FaturaProcessor();
-        faturaProcessor.processarDiretorio("cemig", "saida/");
+//        FaturaProcessor faturaProcessor = new FaturaProcessor();
+//        faturaProcessor.processarDiretorio("cemig", "saida/");
 
 //
 //        System.out.println("==================================");

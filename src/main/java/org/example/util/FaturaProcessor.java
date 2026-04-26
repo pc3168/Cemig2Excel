@@ -14,7 +14,6 @@ public class FaturaProcessor {
     private static final String NOME_ARQUIVO_CSV = gerarNomeArquivo();
 
     public void processarDiretorio(String origem, String destino) {
-        List<Fatura> faturasProcessadas = new ArrayList<>();
         File pasta = new File(origem);
 
         for (File f : pasta.listFiles((dir, name) -> name.toLowerCase().endsWith(".pdf"))) {
@@ -38,12 +37,11 @@ public class FaturaProcessor {
 
                 FaturaParser faturaParser = new FaturaParser(dados, f.getName());
                 Fatura faturaLimpa = faturaParser.getFatura();
-                faturasProcessadas.add(faturaLimpa);
                 System.out.println("=================================");
                 System.out.println(faturaLimpa);
                 System.out.println("=================================");
 
-                ExcelExporter.gerarCSVToString(f.getName(), faturaLimpa, destino + NOME_ARQUIVO_CSV);
+                ExcelExporter.gerarCSVToString(f.getName(), faturaLimpa, destino + File.pathSeparator + NOME_ARQUIVO_CSV);
             }catch (Exception e){
                 LogErro.gravarErro(f.getName(), e.getMessage());
             }
