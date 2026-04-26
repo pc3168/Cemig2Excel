@@ -5,7 +5,6 @@ import org.example.model.Parametro;
 import org.example.util.FaturaProcessor;
 
 import javax.swing.*;
-import java.io.File;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -15,10 +14,12 @@ public class Main {
 //        FaturaProcessor faturaProcessor = new FaturaProcessor();
 //        faturaProcessor.processarDiretorio("cemig", "saida/");
 
+        String version = "1.0";
+
         // Se não houver argumentos ou o primeiro for "--gui" ou "grafica"
         if (args.length == 0 || args[0].equalsIgnoreCase("--gui")) {
 
-            System.out.println("Iniciando interface gráfica...");
+            System.out.println("Iniciando interface gráfica... versão " + version);
             SwingUtilities.invokeLater(() -> {
                 new TelaProcessador().setVisible(true);
             });
@@ -35,7 +36,7 @@ public class Main {
             String entrada = args[1];
             String saida = args[2];
 
-            System.out.println("Iniciando processamento via CLI...");
+            System.out.println("Iniciando processamento via CLI... versão " + version);
             System.out.println("Entrada: " + entrada);
             System.out.println("Saída: " + saida);
 
