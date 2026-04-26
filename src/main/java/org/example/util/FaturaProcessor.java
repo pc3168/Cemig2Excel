@@ -11,6 +11,8 @@ import java.util.List;
 
 public class FaturaProcessor {
 
+    private static final String NOME_ARQUIVO_CSV = gerarNomeArquivo();
+
     public void processarDiretorio(String origem, String destino) {
         List<Fatura> faturasProcessadas = new ArrayList<>();
         File pasta = new File(origem);
@@ -40,19 +42,21 @@ public class FaturaProcessor {
                 System.out.println("=================================");
                 System.out.println(faturaLimpa);
                 System.out.println("=================================");
+
+                ExcelExporter.gerarCSVToString(f.getName(), faturaLimpa, destino + NOME_ARQUIVO_CSV);
             }catch (Exception e){
                 LogErro.gravarErro(f.getName(), e.getMessage());
             }
 
         }
-        try{
+        /*try{
             ExcelExporter.gerarCSVToString(faturasProcessadas, destino + gerarNomeArquivo());
         } catch (Exception e) {
             LogErro.gravarErro("", "Erro ao gerar arquivo CSV. "+e.getMessage());
-        }
+        }*/
     }
 
-    private String gerarNomeArquivo(){
+    private static String gerarNomeArquivo(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
         String timestamp = LocalDateTime.now().format(formatter);
         return timestamp + ".csv";
